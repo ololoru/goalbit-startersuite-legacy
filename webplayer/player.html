@@ -1,0 +1,378 @@
+<html>
+<head>
+	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script> 
+</head>
+
+
+<body>
+	<div id="Video" style="width: 100%; position: absolute; top: 0px; background-color: black; text-align: center"> 
+		<OBJECT classid="clsid:A34B8124-596C-4dc8-9580-785A7BD5A3DE" codebase="goalbit-activex-installer.cab" id="goalbit" events="True"><param name="ShowDisplay" value="True" /><param name="AutoLoop" value="False" /><param name="AutoPlay" value="False" /><param name="Volume" value="100" /><param name="StartTime" value="0"/></OBJECT>
+	</div>
+	
+	<div id="Player" style="min-height: 1px; height: 25px; width: 100%; position: absolute; bottom: 0px; background: url(images/back.png) repeat-x; background-position: 0px 0px; text-align: center; margin-left: auto; margin-right: auto; ">
+				
+		<img src="images/play1.png" id="ButtonPlay" style="border: 1px solid #CCCCCC; position: absolute;vertical-align: top; margin-top: 2px; left: 0px" onclick='playClick()' onmouseover='playmouseover()' onmouseout='playmouseout()'></img>
+		
+		<img src="images/fullscreen1.png" id="ButtonFullScreen" style="border: 1px solid #CCCCCC; position: absolute; left: 0px; top: 4px;" onclick='fullScreenClick()' onmouseover="fullsmouseover()" onmouseout="fullsmouseout()"></img>
+
+		<img src="images/mute1.png" id="ButtonMute" style="border: 1px solid #CCCCCC; position: absolute; left: 0px; top: 4px; z-index: 1" onclick='muteClick()' onmouseover="mutemouseover(event)" onmouseout="mutemouseout(event)"></img>
+		
+		<img src="images/volumebar.png" id="VolumeBar" style="position: absolute; left: 0px; top: 4px; width: 0px; height: 15px; z-index: 0" onmouseout="volumebarout(event)" onmouseover="volumebarover(event)" onmousemove="volumebarover(event)" onmousedown="volumebardown(event)" onmouseup="volumebarup()"></img>
+		
+		<img src="images/volumepipe.png" id="VolumePipe" style="position: absolute; left: 0px; top: 8px; width: 0px;  z-index: 1" onmouseout="volumebarout(event)" onmouseover="volumebarover(event)" onmousedown="volumebardown(event)" onmouseup="volumebarup()"></img>
+		
+	</div>
+
+	<!-- Imagenes dummy pero para cargar mas rapido !-->
+	<img src="images/fullscreen2.png" id="ImageDummy1" style="width: 0px"></img>
+	<img src="images/mute2.png" id="ImageDummy2" style="width: 0px"></img>
+	<img src="images/mute3.png" id="ImageDummy3" style="width: 0px"></img>
+	<img src="images/mute4.png" id="ImageDummy4" style="width: 0px"></img>
+	<img src="images/pause1.png" id="ImageDummy5" style="width: 0px"></img>
+	<img src="images/pause2.png" id="ImageDummy6" style="width: 0px"></img>
+	<img src="images/play2.png" id="ImageDummy7" style="width: 0px"></img>
+		
+	<script>
+		function mouseX(evt) {
+		if (evt.pageX) return evt.pageX;
+		else if (evt.clientX)
+		   return evt.clientX + (document.documentElement.scrollLeft ?
+		   document.documentElement.scrollLeft :
+		   document.body.scrollLeft);
+		else return null;
+		}
+		
+		function mouseY(evt) {
+		if (evt.pageY) return evt.pageY;
+		else if (evt.clientY)
+		   return evt.clientY + (document.documentElement.scrollTop ?
+		   document.documentElement.scrollTop :
+		   document.body.scrollTop);
+		else return null;
+		}
+		
+		function getUrlVars() {
+			var vars = [], hash;
+			var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		 
+			for(var i = 0; i < hashes.length; i++) {
+				hash = hashes[i].split('=');
+				vars.push(hash[0]);
+				vars[hash[0]] = hash[1];
+			}
+		 
+			return vars;
+		}
+		
+		function whichBrs() {
+			var agt=navigator.userAgent.toLowerCase();
+			if (agt.indexOf("opera") != -1) return 'Opera';
+			if (agt.indexOf("staroffice") != -1) return 'Star Office';
+			if (agt.indexOf("webtv") != -1) return 'WebTV';
+			if (agt.indexOf("beonex") != -1) return 'Beonex';
+			if (agt.indexOf("chimera") != -1) return 'Chimera';
+			if (agt.indexOf("netpositive") != -1) return 'NetPositive';
+			if (agt.indexOf("phoenix") != -1) return 'Phoenix';
+			if (agt.indexOf("firefox") != -1) return 'Firefox';
+			if (agt.indexOf("safari") != -1) return 'Safari';
+			if (agt.indexOf("skipstone") != -1) return 'SkipStone';
+			if (agt.indexOf("msie") != -1) return 'Internet Explorer';
+			if (agt.indexOf("netscape") != -1) return 'Netscape';
+			if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
+			if (agt.indexOf('\/') != -1) {
+			if (agt.substr(0,agt.indexOf('\/')) != 'mozilla') {
+			return navigator.userAgent.substr(0,agt.indexOf('\/'));}
+			else return 'Netscape';} else if (agt.indexOf(' ') != -1)
+			return navigator.userAgent.substr(0,agt.indexOf(' '));
+			else return navigator.userAgent;
+		}
+		
+		var hash = null;
+		var PlayState = 0; //0 stop, 1 play
+		var MuteState = 0;
+		var volValor = 100;
+		var volMoving = 0;
+		var mostrado = 0;
+		var mostrando = 0;
+		var guardando = 0;
+		
+        function versionEsMenorQue(myVersion, minimumAcceptVersion)
+        {
+            var minimumArray1 = minimumAcceptVersion.split(' ');
+            var minimumArray = minimumArray1[0].split('.');
+            var mineArray1 = myVersion.split(' ');
+            var mineArray = mineArray1[0].split('.');
+            for (i = 0; i < minimumArray.length; i++)
+                if (mineArray[i] > minimumArray[i])
+                    return false;
+                else if (mineArray[i] < minimumArray[i])
+                    return true;
+                else
+                    continue;
+            return false;
+        }
+        
+		function pluginSegunBrowser()
+		{
+			var browser = whichBrs();
+			if (browser == 'Safari' || browser == 'Firefox' || browser == 'Mozilla')
+				document.getElementById("Video").innerHTML = '<embed type="application/x-goalbit-plugin" pluginspage="http://goalbit.sourceforge.net/" version="0.7.6" id="goalbit" autoplay="false" showdisplay="true" width="100%" height="100%"></embed>';
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit.audio == null)
+			{
+				if (browser != 'Firefox')
+					$.get('intro.html',  function(data) { $("#Video").hide(); $("#Video").html(data); $("#Video").fadeIn("slow"); } );
+				else
+					$.get('intro_firefox.html',  function(data) { $("#Video").hide(); $("#Video").html(data); $("#Video").fadeIn("slow"); } );
+			}
+			else 
+            {
+                var oldversion = false;
+                if (hash['minimumAcceptVersion'] != null && hash['minimumAcceptVersion'] != '')
+                {
+                    if ((browser != 'Internet Explorer' && versionEsMenorQue(goalbit.versionInfo(), hash['minimumAcceptVersion'])) || (browser == 'Internet Explorer' && versionEsMenorQue(goalbit.versionB, hash['minimumAcceptVersion'])))
+                    {
+                        oldversion = true;
+                        $.get('oldversion.html',  function(data) { $("#Video").hide(); $("#Video").html(data); $("#Video").fadeIn("slow"); } );
+                    }
+                }
+                if (!oldversion && hash['maximumAcceptVersion'] != null && hash['maximumAcceptVersion'] != '')
+                {
+                    if ((browser != 'Internet Explorer' && versionEsMenorQue(hash['maximumAcceptVersion'], goalbit.versionInfo())) || (browser == 'Internet Explorer' && versionEsMenorQue(hash['maximumAcceptVersion'], goalbit.versionB)))
+                        $.get('newversion.html',  function(data) { $("#Video").hide(); $("#Video").html(data); $("#Video").fadeIn("slow"); } );
+                }
+
+            }
+		}
+
+		function initPlayer()
+		{
+			hash = getUrlVars();
+			pluginSegunBrowser();
+				 
+			document.getElementById('Video').style.height = document.getElementsByTagName('body')[0].clientHeight - 25;
+			document.getElementById('ButtonFullScreen').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) - 33;
+			document.getElementById('ButtonPlay').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) - 11;
+			document.getElementById('ButtonMute').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) + 13;
+			document.getElementById('VolumeBar').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) + 25;
+			document.getElementById('VolumePipe').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) + 37 + volValor;
+			
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit.playlist != null)
+				goalbit.playlist.add(hash['url']);
+			if (hash['autoplay'] && hash['autoplay'] == 'true')
+				playClick();
+			if (hash['fullscreen'] && hash['fullscreen'] == 'true')
+				fullScreenOn();
+			
+			setTimeout(aspectRatio, 4000);
+			setTimeout(fullSizeChoto, 500);
+		}
+		
+		function fullSizeChoto()
+		{
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit != null)
+			{
+				goalbit.style.width = '100%';
+				goalbit.style.height = '100%';
+			}
+		}
+				
+		function aspectRatio()
+		{
+			if (hash['aspectRatio'] && (hash['aspectRatio'] == '1:1' || hash['aspectRatio'] == '4:3' || hash['aspectRatio'] == '16:9' || hash['aspectRatio'] == '16:10' || hash['aspectRatio'] == '221:100' || hash['aspectRatio'] == '5:4') )
+			goalbit.video.aspectRatio = hash['aspectRatio'];			
+
+		}
+		
+		function fullScreenOn()
+		{
+			if (!goalbit.video.fullscreen)
+			{
+				goalbit.video.fullscreen = true;
+				setTimeout(fullScreenOn, 2000);
+			}
+		}
+		
+		function playClick() 
+		{
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit == null)
+				return;
+			if (PlayState == 0) 
+			{
+				goalbit.playlist.play();
+				PlayState = 1;
+				document.getElementById("ButtonPlay").src = "images/pause2.png";
+			}
+			else 
+			{
+				if (goalbit != null)
+					goalbit.playlist.stop();
+				PlayState = 0;
+				document.getElementById("ButtonPlay").src = "images/play2.png";
+			}
+		}
+		
+		function playmouseover() {
+			if (PlayState == 0)
+				document.getElementById("ButtonPlay").src = "images/play2.png";
+			else
+				document.getElementById("ButtonPlay").src = "images/pause2.png";
+		}
+
+		function playmouseout() {
+			if (PlayState == 0)
+				document.getElementById("ButtonPlay").src = "images/play1.png";
+			else
+				document.getElementById("ButtonPlay").src = "images/pause1.png";
+		}
+		
+		function fullScreenClick() {
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit == null)
+				return;
+			if (PlayState != 0)
+				goalbit.video.toggleFullscreen();
+		}
+		
+		function fullsmouseover() {
+			if (PlayState != 0)
+				document.getElementById("ButtonFullScreen").src = "images/fullscreen2.png";
+		}
+		
+		function fullsmouseout() {
+			if (PlayState != 0)
+				document.getElementById("ButtonFullScreen").src = "images/fullscreen1.png";
+		}
+		
+		function cursorDentroTodoVol(event)
+		{
+			var p = $("#VolumeBar");
+			var position = p.offset();
+			var x = parseInt(mouseX(event)) - parseInt(position.left);
+			var y = parseInt(mouseY(event)) - parseInt(position.top);
+			
+			if (x < 0 || x > 135)
+				return false;
+			
+			if (y < 0 || y > 15)
+				return false;
+			
+			return true;
+		}
+
+		function guardar()
+		{
+			if (volMoving == 1)
+				volumebarup();
+			guardando = 1;
+			document.getElementById("VolumePipe").style.width = "0px";
+			document.getElementById("VolumeBar").style.borderRight = "0px solid #CCCCCC";
+			$("#VolumeBar").animate( { width:"0px"}, 500, function() 
+			{
+				document.getElementById("VolumeBar").style.border = "0px solid #CCCCCC";			
+				document.getElementById("ButtonMute").style.borderRight = "1px solid #CCCCCC";
+				guardando = 0;
+				mostrado = 0;
+			} );
+		}
+		
+		function mostrar()
+		{
+			mostrando = 1;
+			document.getElementById("ButtonMute").style.borderRight = "0px solid #CCCCCC";
+			document.getElementById("VolumeBar").style.borderTop = "1px solid #CCCCCC";
+			document.getElementById("VolumeBar").style.borderBottom = "1px solid #CCCCCC";
+			
+			$("#VolumeBar").animate( { width:"125px"}, 500, function() { 
+				document.getElementById("VolumeBar").style.borderRight = "1px solid #CCCCCC";
+				document.getElementById("VolumePipe").style.width = "2px";
+				mostrando = 0;
+				mostrado = 1;
+			}  );
+		}
+		
+		function mutemouseover(event) {
+			if (MuteState == 0) 
+				document.getElementById("ButtonMute").src = "images/mute2.png";
+			else
+				document.getElementById("ButtonMute").src = "images/mute4.png";
+			
+			if (mostrado == 0 && mostrando == 0 && guardando == 0)
+				mostrar();
+		}
+		
+		function mutemouseout(event) {
+			if (MuteState == 0) 
+				document.getElementById("ButtonMute").src = "images/mute1.png";
+			else
+				document.getElementById("ButtonMute").src = "images/mute3.png";
+			
+			if (cursorDentroTodoVol(event) == false && mostrado == 1 && mostrando == 0 && guardando == 0)
+				guardar();
+		}
+		
+		function volumebarout(event)
+		{
+			if (cursorDentroTodoVol(event) == false  && mostrado == 1 && mostrando == 0 && guardando == 0)
+				guardar();
+		}		
+				
+		function volumebarover(event)
+		{
+			if (volMoving == 1)
+			{
+				var p = $("#VolumeBar");
+				var position = p.offset();
+				var pos = parseInt(mouseX(event) - position.left) - 13;
+				
+				volValor = pos;
+				if (pos < 5)
+					volValor = 0;
+				if (pos > 97)
+					volValor = 100;
+
+				if (pos < 2)
+					pos = -2;
+				if (pos > 97)
+					pos = 100;
+				document.getElementById('VolumePipe').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) + 37 + pos;
+			}
+		}
+		
+		function volumebarup()
+		{
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit != null && MuteState == 0)
+				goalbit.audio.volume = volValor;
+			volMoving = 0;	
+		}
+		
+		function volumebardown(event) 
+		{
+			volMoving = 1;
+			volumebarover(event);
+		}
+		
+		function muteClick(event) {
+			MuteState = (MuteState + 1) % 2;
+			if (MuteState == 0) 
+				document.getElementById("ButtonMute").src = "images/mute2.png";
+			else
+				document.getElementById("ButtonMute").src = "images/mute4.png";
+
+			var goalbit = document.getElementById("goalbit");
+			if (goalbit != null)
+				goalbit.audio.toggleMute();		
+				
+			if (MuteState == 0)
+				goalbit.audio.volume = volValor;
+		}
+		
+		$(document).ready(function(){ initPlayer(); });
+	</script>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+1. Copy this directory (startersuite) to the root web directory (eg. /var/www/)
+2. Go to the webpage http://server-where-installed/startersuite
+
+Enjoy!
