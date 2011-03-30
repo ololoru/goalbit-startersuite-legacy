@@ -24,3 +24,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 ?>
+<?= '<?xml version="1.0" encoding="UTF-8"?>' ?>
+<channel_list size="1" active_channel="<?= $channel[0]['hosted_channel_id'] ?>"  version="1">
+	<channel id="<?= $channel[0]['hosted_channel_id'] ?>">
+		<chunk_size><?= $channel[0]['hosted_channel_chunk_size'] ?></chunk_size>
+		<tracker_url><?= $channel[0]['hosted_channel_tracker_url'] ?></tracker_url>
+		<bitrate><?= $channel[0]['hosted_channel_bitrate'] ?></bitrate>
+		<name><?= $channel[0]['hosted_channel_name'] ?></name>
+		<description></description>
+		<thumb></thumb>
+	</channel>
+</channel_list>

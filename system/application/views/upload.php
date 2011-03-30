@@ -24,3 +24,28 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 ?>
+<table class="modal_header">
+	<tr>
+		<td class="modal_title"><?= $this->lang->line('Upload a GoalBit file') ?></td>
+		<td class="modal_close"><a class="modal_close" href="" id="closeModal"><?= $this->lang->line('Close') ?></a></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<br/>
+			<p class="label"><?= $this->lang->line('Use this when the broadcaster is already running and you have the .goalbit file.') ?></p>
+			<br/>
+			<form action="<?= base_url() ?>channel_list/upload_file" method="post" enctype="multipart/form-data" id="myForm" >
+				<table>	
+					<tr>
+						<td class="label" >
+							<input class="input" style="height:20px; width: 500px" type="file" name="file" id="file" />
+						</td>
+						<td>
+							<input class="button" type="submit" value ="<?= $this->lang->line('Submit') ?>"  />					
+						</td>
+					</tr>
+				</table>
+			</form>	
+		</td>
+	</tr>
+</table>
