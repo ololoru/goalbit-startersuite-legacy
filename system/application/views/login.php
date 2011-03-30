@@ -29,28 +29,6 @@
 <table style="width: 100%; text-align: center">
 	<tr>
 		<td style="text-align: center">
-			<p class="title">How to broadcast</p> 
-			<br/>
-			<p class="label">To broadcast from you video files or webcam just use the option</p> 
-			<img src="<?= base_url() ?>images/broadcast_link.png" style="margin: 5px 5px 5px 5px"/>
-			<p class="label">in the "Channels" section.</p> 
-			<br/>
-			<p class="label">Once you are broadcasting your channel should appear in the listing.</p> 
-			<br/>
-			<p class="label">Copy the share link and send it to your friends!</p> 
-		</td>
-	</tr>
-	<tr>
-		<td style="text-align: center">
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<p class="title">Come on and get in...</p> 
-		</td>
-	</tr>
-	<tr>
-		<td style="text-align: center">
 			<? if ($this->session->userdata('user') == '') { ?>
 				<br/>
 				<form action="<?= base_url() ?>login/log_me_in/" method="post" name="login" style="text-align: center">
@@ -78,17 +56,6 @@
 				</table>
 				</form>
 			<? } ?>
-		</td>
-	</tr>
-	<tr>
-		<td style="text-align: center">				
-			<br/>
-			<br/>
-			<p class="label" >Comments? Help? Post at our <a class="operaciones" target="_blank" href="http://sourceforge.net/apps/phpbb/goalbit/viewforum.php?f=8">official forum!<a/> </p> 
-			<br/>
-			<p class="label" style="color: #B0B0B0" >Notice: You should have enough upload bandwidth for broadcasting. We are not providing support for this!</p> 
-			<br/>
-			<p class="label" style="color: #B0B0B0" >This is a simplified version of our professional solution, for testing purposes. For the professional suite please visit <a class="modal_title" target="_blank" href="http://goalbit-solutions.com">goalbit-solutions.com</a></p> 
 		</td>
 	</tr>
 </table>
