@@ -57,12 +57,12 @@ class Btv_channel_peer_model extends Model {
         $sql = 'UPDATE btv_channel_peer
                 SET port             = ?,
                     abi              = ?,
-                    download_rate    = ( ('. $peer_info['downloaded'] .' - downloaded_bytes )*8/1000 ) / TIMESTAMPDIFF( SECOND, last_report, NOW() ),
+                    download_rate    = ( ('. $peer_info['downloaded'] .' - downloaded_bytes )*8/1000 ) / TIMESTAMPDIFF( SECOND, last_report, \''.date("Y-m-d H:i:s", time()).'\' ),
                     downloaded_bytes = ?,
-                    upload_rate      = ( ('. $peer_info['uploaded'] .' - uploaded_bytes )*8/1000 ) / TIMESTAMPDIFF( SECOND, last_report, NOW() ),
+                    upload_rate      = ( ('. $peer_info['uploaded'] .' - uploaded_bytes )*8/1000 ) / TIMESTAMPDIFF( SECOND, last_report, \''.date("Y-m-d H:i:s", time()).'\' ),
                     uploaded_bytes   = ?,
                     qoe              = ?,
-                    last_report      = NOW() '.
+                    last_report      = \''.date("Y-m-d H:i:s", time()).'\' '.
                     $opened_port_sql
                .' WHERE channel_hash_id = ? AND
                       peer_hash_id    = ?';
@@ -106,8 +106,8 @@ class Btv_channel_peer_model extends Model {
                         uploaded_bytes   = ?,
                         upload_rate      = 0,
                         qoe             = ?,
-                        regdate         = NOW(),
-                        last_report     = NOW()'.
+                        regdate         = \''.date("Y-m-d H:i:s", time()).'\',
+                        last_report     = \''.date("Y-m-d H:i:s", time()).'\''.
                         $opened_port_sql;
 
             unset($sql_data);
@@ -562,7 +562,7 @@ class Btv_channel_peer_model extends Model {
     function update_peers()
     {
         $sql = 'DELETE FROM btv_channel_peer
-                WHERE ( UNIX_TIMESTAMP() - UNIX_TIMESTAMP(last_report) ) > '. PEERS_TIMEOUT;
+                WHERE ( UNIX_TIMESTAMP(\''.date("Y-m-d H:i:s", time()).'\') - UNIX_TIMESTAMP(last_report) ) > '. PEERS_TIMEOUT;
 
         $this->db->query($sql);
     }
