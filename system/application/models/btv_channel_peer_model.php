@@ -244,7 +244,7 @@ class Btv_channel_peer_model extends Model {
                     WHERE channel_hash_id = ? AND
                           type IN ('.implode(',', $seeder_type).') AND
                           peer_hash_id != ?
-                    ORDER BY ABS( CAST(INET_ATON(?) - INET_ATON(ip) AS SIGNED) )*( -LN(1.0-RAND())*1/5 ) ASC '.
+                    ORDER BY ABS( CAST(INET_ATON(?) AS SIGNED) - CAST(INET_ATON(ip) AS SIGNED) )*( -LN(1.0-RAND())*1/5 ) ASC '.
                            //| ------------- Distancia entre IPs --------------| |------- Random exp -------|
                    'LIMIT '. $seeder_num_return .'
                 )
@@ -257,7 +257,7 @@ class Btv_channel_peer_model extends Model {
                           type IN ('.implode(',', $peer_type).') AND
 						  peer_hash_id != ? AND
                           opened_port = 1
-                    ORDER BY ABS( CAST(INET_ATON(?) - INET_ATON(ip) AS SIGNED) )*( -LN(1.0-RAND())*1/5 ) ASC '.
+                    ORDER BY ABS( CAST(INET_ATON(?) AS SIGNED) - CAST(INET_ATON(ip) AS SIGNED) )*( -LN(1.0-RAND())*1/5 ) ASC '.
                            //| ------------- Distancia entre IPs --------------| |------- Random exp -------|
                    'LIMIT '. $peer_num_return .'
                 )';
