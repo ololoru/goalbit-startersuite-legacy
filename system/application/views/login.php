@@ -25,7 +25,12 @@
  *****************************************************************************/
 ?>
 <? $this->load->view('header'); ?>
+<p style="text-align: center">
+For more information on GoalBit, its products and usage please visit the <a target="_blank" href="http://sourceforge.net/apps/mediawiki/goalbit/index.php?title=Main_Page">Wiki page</a>.
+<br/>
+To get in touch with other members of the community visit the <a target="_blank" href="http://sourceforge.net/apps/phpbb/goalbit/">Forum</a>.
 
+</p>
 <table style="width: 100%; text-align: center">
 	<tr>
 		<td style="text-align: center">

@@ -130,11 +130,11 @@ a.tab:hover {
 }
 
 a.selected {
-	color: #267F00;
+	color: #2E6E9E;
 }
 
 a.selected:hover {
-	color: #267F00;
+	color: #2E6E9E;
 }
 
 #content {
@@ -157,9 +157,9 @@ a.selected:hover {
 	width:97%; 
 	position: relative; 
 	top: -20px; 
-	background-color: #267F00;
+	background-color: #2E6E9E;
 	z-index: -1; 
-	border: 1px solid #267F00; 
+	border: 1px solid #2E6E9E; 
 	-moz-border-radius: 5px; 
 	border-radius: 5px; 
 	border-top-left-radius: 0px 0px; 
@@ -168,7 +168,6 @@ a.selected:hover {
 	height: 30px; 
 	text-align: right; 
 	padding-right: 10px; 
-	opacity: 0.8;
 	filter: alpha(opacity = 80);
 }
 
