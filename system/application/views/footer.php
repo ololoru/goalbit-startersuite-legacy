@@ -25,12 +25,6 @@
  *****************************************************************************/
 ?>
 		</div> 
-		<div id="footer">
-			<br/>
-			<a id="footer_text" href="http://www.goalbit-solutions.com" target="_blank">
-				Starter Suite v<?= STARTERSUITE_VERSION ?>
-			</a>
-		</div> 
 	</div> 
 </body>
 </html>

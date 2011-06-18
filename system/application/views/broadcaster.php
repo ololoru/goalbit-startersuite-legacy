@@ -265,12 +265,12 @@ $this->load->view('header',$data);
 	
 	function getRegularTranscode(ab,vb)
 	{
-		return "#transcode{vb="+vb+",width=320,venc=x264{subme=5,ref=3,bframes=3,qpmax=28},vcodec=h264,acodec=mp4a,ab="+ab+",threads=1}";
+		return "#transcode{vcodec=h264,vb="+vb+",width=320,height=240,acodec=mp4a,ab="+ab+"}";
 	}
 	
 	function getGoodTranscode(ab,vb)
 	{
-		return "#transcode{vb="+vb+",width=640,venc=x264{subme=5,ref=3,bframes=3,qpmax=28},vcodec=h264,acodec=mp4a,ab="+ab+",threads=1}";
+		return "#transcode{vcodec=h264,vb="+vb+",width=640,height=480,acodec=mp4a,ab="+ab+"}";
 	}
 	
 	function getOriginalTranscode()

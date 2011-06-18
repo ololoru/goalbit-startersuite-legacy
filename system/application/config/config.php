@@ -414,13 +414,13 @@ DEFINE( 'EXAMPLE_ROUTE', "examples/" );
 DEFINE ('SESS_EXPIRATION', $config['sess_expiration']);
 
 // Webplugins version accepted, leave blank for accepting all!
-DEFINE ('WEBPLUGINS_VERSION', '0.7.6');
+DEFINE ('WEBPLUGINS_VERSION', '0.7.7');
 
 //Refresh time in miliseconds
 DEFINE ('REFRESH_TIME', '60000');
 DEFINE ('REFRESH_TIME_VIEWERS', '30000');
 
-DEFINE ('STARTERSUITE_VERSION', '0.2');
+DEFINE ('STARTERSUITE_VERSION', '0.1.1');
 
 //Log
 DEFINE ('LOG_ENABLED', false);

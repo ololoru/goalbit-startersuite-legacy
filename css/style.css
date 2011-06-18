@@ -157,9 +157,9 @@ a.selected:hover {
 	width:97%; 
 	position: relative; 
 	top: -20px; 
-	background-color: #2E6E9E;
+	background-color: none;
 	z-index: -1; 
-	border: 1px solid #2E6E9E; 
+	border: 0px solid #2E6E9E; 
 	-moz-border-radius: 5px; 
 	border-radius: 5px; 
 	border-top-left-radius: 0px 0px; 
@@ -168,11 +168,10 @@ a.selected:hover {
 	height: 30px; 
 	text-align: right; 
 	padding-right: 10px; 
-	filter: alpha(opacity = 80);
 }
 
 #footer_text {
-	color: white; 
+	color: #2E6E9E;
 	text-shadow: 0px 0px 0px #C0C0C0;
 }
 
