@@ -9,6 +9,10 @@
 		<OBJECT classid="clsid:A34B8124-596C-4dc8-9580-785A7BD5A3DE" codebase="goalbit-activex-installer.cab" id="goalbit" events="True"><param name="ShowDisplay" value="True" /><param name="AutoLoop" value="False" /><param name="AutoPlay" value="False" /><param name="Volume" value="100" /><param name="StartTime" value="0"/></OBJECT>
 	</div>
 	
+<div id="slider" style="height: 15px; width: 100%; position: absolute; bottom: 25px; text-align: left; margin-left: auto; margin-right: auto; border: 0px solid red;  background: url(images/back2.png) repeat-x; background-position: 0px 0px;" onclick="change_slider(event)">
+    <img src="images/volumepipe.png" id="slider_bar" style="position: relative; padding-left: 1px; left: 0px; top: 3px;  z-index: 1"></img>
+</div>
+
 	<div id="Player" style="min-height: 1px; height: 25px; width: 100%; position: absolute; bottom: 0px; background: url(images/back.png) repeat-x; background-position: 0px 0px; text-align: center; margin-left: auto; margin-right: auto; ">
 				
 		<img src="images/play1.png" id="ButtonPlay" style="border: 1px solid #CCCCCC; position: absolute;vertical-align: top; margin-top: 2px; left: 0px" onclick='playClick()' onmouseover='playmouseover()' onmouseout='playmouseout()'></img>
@@ -150,7 +154,7 @@
 			hash = getUrlVars();
 			pluginSegunBrowser();
 				 
-			document.getElementById('Video').style.height = document.getElementsByTagName('body')[0].clientHeight - 25;
+			document.getElementById('Video').style.height = document.getElementsByTagName('body')[0].clientHeight - 25 - 15;
 			document.getElementById('ButtonFullScreen').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) - 33;
 			document.getElementById('ButtonPlay').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) - 11;
 			document.getElementById('ButtonMute').style.left = (document.getElementsByTagName('body')[0].clientWidth/2) + 13;
@@ -205,6 +209,7 @@
 				goalbit.playlist.play();
 				PlayState = 1;
 				document.getElementById("ButtonPlay").src = "images/pause2.png";
+                setTimeout(posicion_slider, 1000);
 			}
 			else 
 			{
@@ -371,6 +376,20 @@
 				goalbit.audio.volume = volValor;
 		}
 		
+        
+        function change_slider(event)
+        {
+            goalbit.input.position = (1 - ($('#slider').width() - mouseX(event))/$('#slider').width());
+            posicion_slider();
+        }
+
+        function posicion_slider()
+        {
+            $('#slider_bar').css('left', $('#slider').width()*goalbit.input.position);
+            setTimeout(posicion_slider, 500);
+        }
+
+
 		$(document).ready(function(){ initPlayer(); });
 	</script>
 </body>
