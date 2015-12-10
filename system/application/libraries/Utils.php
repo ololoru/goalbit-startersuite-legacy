@@ -69,10 +69,10 @@ class Utils {
         else
             $get_params['qoe'] = 0.0;
 
-        if ( $peer_info['numwant'] < 0 )
-            $peer_info['numwant'] = 0;
-        elseif ( $peer_info['numwant'] > MAX_PEERS_TO_RETURN )
-            $peer_info['numwant'] = MAX_PEERS_TO_RETURN;
+        if ( $get_params['numwant'] < 0 )
+            $get_params['numwant'] = 0;
+        elseif ( $get_params['numwant'] > MAX_PEERS_TO_RETURN )
+            $get_params['numwant'] = MAX_PEERS_TO_RETURN;
 
         $port_check = 0;
         if ( isset($get_params['port_check']) )
